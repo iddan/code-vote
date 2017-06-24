@@ -3,6 +3,19 @@ import Requestable from 'github-api/dist/components/Requestable';
 import find from 'lodash/fp/find';
 import groupBy from 'lodash/fp/groupBy';
 
+const url = new URL(window.location.href);
+export const token = url.searchParams.get('code');
+
+const { REACT_APP_GITHUB_CLIENT_ID } = process.env;
+export const login = () => {
+  const url = new URL('http://github.com/login/oauth/authorize');
+  url.searchParams.set('client_id', REACT_APP_GITHUB_CLIENT_ID);
+  url.searchParams.set('redirect_uri', 'https://iddan.github.io/lodash-vote');
+  url.searchParams.set('scope', '');
+  url.searchParams.set('state', Math.random());
+  window.location.replace(url);
+};
+
 class CustomGithub extends GitHub {
 
   authorized = false;
@@ -33,14 +46,6 @@ class CustomGithub extends GitHub {
   );
 }
 
-const url = new URL(window.location.href);
-
-console.log(url.searchParams.get('code'));
-
-export default new CustomGithub({
-  token: url.searchParams.get('code'),
-});
-
 const INITIAL_REACTIONS = {
   '+1': null,
   '-1': null,
@@ -49,6 +54,8 @@ const INITIAL_REACTIONS = {
   'heart': null,
   'hooray': null,
 };
+
+export default new CustomGithub({ token });
 
 class Reactions extends Requestable {
   constructor(auth, apiBase, AcceptHeader, owner, repo, issue) {

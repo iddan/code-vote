@@ -9,15 +9,14 @@ class Proposals extends Component {
     view: 5,
   };
 
-  repoIssues = github.getIssues('lodash', 'lodash');
-
   componentDidMount() {
     this.get();
   }
 
   get = async () => {
+    const { repo } = this.props;
     const { data: list } = await github.search().forIssues({
-      q: 'label:"votes needed" repo:"lodash" user:"lodash"',
+      q: `label:"votes needed" repo:"${ repo.name }" user:"${ repo.user }"`,
     });
     this.setState({ list });
   }
@@ -25,11 +24,12 @@ class Proposals extends Component {
   loadMore = () => {
     this.setState(state => ({
       ...state,
-      view: state.view + 5
+      view: state.view + 5,
     }));
   }
 
   render() {
+    const { repo } = this.props;
     const { view, list } = this.state;
 
     if (!list) {
@@ -42,9 +42,9 @@ class Proposals extends Component {
           list.slice(0, view).map(({ number, title, body }) => (
             <Proposal key={ number }
                       number={ number }
-                      repoIssues={ this.repoIssues }
                       title={ title }
-                      body={ body } />
+                      body={ body }
+                      repo={ repo } />
           ))
         }
         { view < list.length && <button onClick={ this.loadMore }>Load More</button> }

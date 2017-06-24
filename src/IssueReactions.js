@@ -5,10 +5,14 @@ import Reaction from './Reaction';
 
 class IssueReactions extends Component {
 
-  issueReactions = github.getIssueReactions('lodash', 'lodash', this.props.issueNumber);
+  issueReactions = github.getIssueReactions(
+    this.props.repo.user,
+    this.props.repo.name,
+    this.props.issueNumber
+  );
 
   state = {
-    data: {}
+    data: {},
   };
 
   componentDidMount() {
