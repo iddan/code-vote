@@ -7,7 +7,7 @@ import Repository from './Repository';
 import './App.css';
 
 const App = () => (
-  <Router>
+  <Router basename="/code-vote/">
     <div className="App">
       <header>
         <Logo />
