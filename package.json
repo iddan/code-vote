@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.11",
     "marked": "^0.3.6",
     "prismjs": "^1.6.0",
     "react": "^15.5.4",
